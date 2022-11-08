@@ -35,6 +35,7 @@ public:
 	void add_row(double = 0.0);
 	void add_col(const matrix&); // throw (string);
 	void add_row(const matrix&); // throw (string);
+	void printme();
 };
 
 matrix operator+(const matrix&, const matrix&); // throw (string);
