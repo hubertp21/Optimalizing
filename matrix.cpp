@@ -119,6 +119,7 @@ double matrix::operator()(int nv, int mv) const
 
 void matrix::printme() 
 {
+	cout << "\nPRINTING MATRIX:\n";
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = 0; j < m; j++)
@@ -127,6 +128,7 @@ void matrix::printme()
 		}
 		cout << endl;
 	}
+	cout << "---------------------------------";
 	cout << endl;
 }
 
