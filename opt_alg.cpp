@@ -39,7 +39,7 @@ double* expansion(matrix(*ff)(matrix, matrix, matrix), double x0, double d, doub
 			X0 = X1;
 			X1 = X2;
 		}
-		cout << "," << solution::f_calls - last_f_call;
+		cout << solution::f_calls - last_f_call;
 		d > 0 ? p[0] = m2d(X0.x), p[1] = m2d(X2.x) : (p[0] = m2d(X2.x), p[1] = m2d(X0.x));
 		return p;
 	}
@@ -57,6 +57,7 @@ solution fib(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 	try
 	{
 		solution Xopt;
+		int last_f_call = solution::f_calls;
 		Xopt.ud = b - a;
 		int n = static_cast<int>(ceil(log2(sqrt(5) * (b - a) / epsilon) / log2((1 + sqrt(5)) / 2)));
 		int* F = new int[n] {1, 1};
@@ -82,6 +83,7 @@ solution fib(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 		}
 		Xopt = C;
 		Xopt.flag = 0;
+		solution::f_calls -= last_f_call;
 		return Xopt;
 	}
 	catch (string ex_info)
@@ -95,7 +97,7 @@ solution lag(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 {
 	try {
 		solution Xopt;
-
+		int last_f_call = solution::f_calls;
 		Xopt.ud = b - a;
 		solution A(a), B(b), C, D, D_old(a);
 		C.x = (a + b) / 2;
@@ -109,6 +111,7 @@ solution lag(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 			if (m <= 0) {
 				Xopt = D_old;
 				Xopt.flag = 2;
+				solution::f_calls -= last_f_call;
 				return Xopt;
 			}
 			D.x = 0.5 * l / m;
@@ -142,6 +145,7 @@ solution lag(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 			else {
 				Xopt = D_old;
 				Xopt.flag = 2;
+				solution::f_calls -= last_f_call;
 				return Xopt;
 			}
 			A.fit_fun(ff, ud1, ud2);
