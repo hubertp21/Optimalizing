@@ -22,7 +22,9 @@ int main()
 {
 	try
 	{
-		for (int i = 0; i < 100; i++) {
+		solution sol = fib(func_lab_1, interval[0], interval[1], 1e-07);
+		sol.x.printme();
+		/*for (int i = 0; i < 100; i++) {
 			cout << i + 1;
 			double* Y = new double[3];
 			Y[0] = 1; Y[1] = 1; Y[2] = 1;
@@ -39,7 +41,7 @@ int main()
 			cout << "," << sol.y;
 			cout << "," << sol.f_calls;
 			cout << endl;
-		}
+		}*/
 	}
 	catch (string EX_INFO)
 	{

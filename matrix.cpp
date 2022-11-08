@@ -117,6 +117,19 @@ double matrix::operator()(int nv, int mv) const
 	return M[nv][mv];
 }
 
+void matrix::printme() 
+{
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			cout << M[i][j] << " ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+}
+
 void matrix::set_col(const matrix& c, int mv)
 {
 	if (mv >= m || mv < 0)
@@ -616,3 +629,5 @@ int get_len(const matrix& A)
 		throw string("int get_len(const matrix&):\ndlugosc jest zwracana tylko dla wektorow pionowych");
 	return A.n;
 }
+
+
