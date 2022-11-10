@@ -58,27 +58,27 @@ void lab1()
 
 		//FIBONACCI
 
-		solution solF = fib(func_lab_12, LBOUND, HBOUND, epsilon);
+		//solution solF = fib(func_lab_12, LBOUND, HBOUND, epsilon);
 
-		cout << solF.x;
-		cout << solF.y;
+		//cout << solF.x;
+		//cout << solF.y;
 
-		/*cout << ";" << solF.x;
-		cout << ";" << solF.y;*/
-		cout << solF.f_calls;
-		solF.clear_calls();
-		cout << ";" << func_lab_12(solF.x, solF.ud, ud2) << endl;
+		///*cout << ";" << solF.x;
+		//cout << ";" << solF.y;*/
+		//cout << solF.f_calls;
+		//solF.clear_calls();
+		//cout << ";" << func_lab_12(solF.x, solF.ud, ud2) << endl;
 
 		//LAGRANGE
 
-		//solution solL = lag(func_lab_12, LBOUND, HBOUND, epsilon, gamma, Nmax);
+		solution solL = lag(func_lab_12, LBOUND, HBOUND, epsilon, gamma, Nmax);
 
 		///*cout << ";" << solL.x;
 		//cout << ";" << solL.y;*/
 		//cout << solL.x;
 		//cout << solL.y;
 
-		//cout << solL.f_calls;
+		//cout << solL.f_calls << endl;
 		//cout << ";" << func_lab_12(solL.x, solL.ud, ud2);
 
 		//cout << endl;

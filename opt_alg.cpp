@@ -141,6 +141,7 @@ solution lag(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 	try {
 		solution Xopt;
 		int last_f_call = solution::f_calls;
+		int ct = 0;
 		Xopt.ud = b - a;
 		solution A(a), B(b), C, D, D_old(a);
 		C.x = (a + b) / 2;
@@ -149,6 +150,7 @@ solution lag(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 		C.fit_fun(ff, ud1, ud2);
 		long double l, m;
 		while (true) {
+			ct++;
 			l = m2d(A.y * (pow(B.x) - pow(C.x)) + B.y * (pow(C.x) - pow(A.x)) + C.y * (pow(A.x) - pow(B.x)));
 			m = m2d(A.y * (B.x - C.x) + B.y * (C.x - A.x) + C.y * (A.x - B.x));
 			if (m <= 0) {
@@ -158,6 +160,13 @@ solution lag(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 				return Xopt;
 			}
 			D.x = 0.5 * l / m;
+
+			/*if (A.x < B.x) {
+				cout << A.x << B.x << " counter: " << ct << "\n";
+			}
+			else {
+				cout << B.x << A.x << " counter: " << ct << "\n";
+			}*/
 
 			D.fit_fun(ff, ud1, ud2);
 			if (A.x <= D.x && D.x <= C.x) {
@@ -196,6 +205,7 @@ solution lag(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 			C.fit_fun(ff, ud1, ud2);
 
 			Xopt.ud.add_row((B.x - A.x)());
+
 			if (B.x - A.x < epsilon || abs(D.x() - D_old.x()) < gamma) {
 				Xopt = D;
 				Xopt.flag = 0;
@@ -208,6 +218,7 @@ solution lag(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 			}
 			D_old = D;
 		}
+	
 		return Xopt;
 	}
 	catch (string ex_info) {
