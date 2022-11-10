@@ -40,17 +40,17 @@ void lab1()
 	srand(time(NULL));
 	for (int i = 0; i < TIMES; i++) {
 		
-		double* Y = new double[3];
-	    double epsilon = 1e-10, gamma = 1e-200, Nmax = 1000;
-		Y[0] = 1; Y[1] = 1; Y[2] = 1;
-		matrix ud2;
+		//double* Y = new double[3];
+	    double epsilon = 1e-5, gamma = 1e-200, Nmax = 1000, alpha = 2;
+		//Y[0] = 1; Y[1] = 1; Y[2] = 1;
+		//matrix ud1;
 
-		int LBOUND = -100, HBOUND = 100;
+		//int LBOUND = -100, HBOUND = 100;
 		
 		//int x0 = 0 + (std::rand() % (100 - 0 + 1));
-		//double* interval = expansion(func_lab_12, x0, 1, 10, 1000);
+		double* interval = expansion(ff1R, 0.0001, 0.01, 2, 1000);
 
-		////cout << "EXPANSION:\nX0: " << x0 << endl << "Point[0] = " << interval[0] << endl << "Point[1] = " << interval[1] << endl;
+		cout << "EXPANSION:\n" << endl << "Point[0] = " << interval[0] << endl << "Point[1] = " << interval[1] << endl;
 
 		//cout << ";" << interval[0];
 		//cout << ";" << interval[1];
@@ -59,6 +59,7 @@ void lab1()
 		//FIBONACCI
 
 		//solution solF = fib(func_lab_12, LBOUND, HBOUND, epsilon);
+		solution solF = fib(ff1R, interval[0], interval[1], epsilon);
 
 		//cout << solF.x;
 		//cout << solF.y;
@@ -71,12 +72,12 @@ void lab1()
 
 		//LAGRANGE
 
-		solution solL = lag(func_lab_12, LBOUND, HBOUND, epsilon, gamma, Nmax);
+		solution solL = lag(ff1R, interval[0], interval[1], epsilon, gamma, Nmax);
 
-		///*cout << ";" << solL.x;
-		//cout << ";" << solL.y;*/
-		//cout << solL.x;
-		//cout << solL.y;
+		/*cout << ";" << solL.x;
+		cout << ";" << solL.y;*/
+		cout << solL.x;
+		cout << solL.y;
 
 		//cout << solL.f_calls << endl;
 		//cout << ";" << func_lab_12(solL.x, solL.ud, ud2);
