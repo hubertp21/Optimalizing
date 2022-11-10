@@ -54,7 +54,7 @@ double* expansion(matrix(*ff)(matrix, matrix, matrix), double x0, double d, doub
 
 solution fib(matrix(*ff)(matrix, matrix, matrix), double a, double b, double epsilon, matrix ud1, matrix ud2)
 {
-	try
+	/*try
 	{
 		solution Xopt;
 		int last_f_call = solution::f_calls;
@@ -89,6 +89,41 @@ solution fib(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 	catch (string ex_info)
 	{
 		throw ("solution fib(...):\n" + ex_info);
+	}*/
+
+	try
+	{
+		solution Xopt;
+		Xopt.ud = b - a;
+		int n = static_cast<int>(ceil(log2(sqrt(5) * (b - a) / epsilon) / log2((1 + sqrt(5)) / 2)));
+		long long* F = new long long[n] {1, 1};
+		for (int i = 2; i < n; ++i)
+			F[i] = F[i - 2] + F[i - 1];
+		solution A(a), B(b), C, D;
+		C.x = B.x - 1.0 * F[n - 2] / F[n - 1] * (B.x - A.x);
+		D.x = A.x + B.x - C.x;
+		C.fit_fun(ff, ud1, ud2);
+		D.fit_fun(ff, ud1, ud2);
+		for (int i = 0; i <= n - 3; ++i)
+		{
+			if (C.y < D.y)
+				B = D;
+			else
+				A = C;
+			C.x = B.x - 1.0 * F[n - i - 2] / F[n - i - 1] * (B.x - A.x);
+			D.x = A.x + B.x - C.x;
+			C.fit_fun(ff, ud1, ud2);
+			D.fit_fun(ff, ud1, ud2);
+
+			Xopt.ud.add_row((B.x - A.x)());
+		}
+		Xopt = C;
+		Xopt.flag = 0;
+		return Xopt;
+	}
+	catch (string ex_info)
+	{
+		throw ("solution fib(...):\n" + ex_info);
 	}
 
 }
@@ -104,7 +139,7 @@ solution lag(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 		A.fit_fun(ff, ud1, ud2);
 		B.fit_fun(ff, ud1, ud2);
 		C.fit_fun(ff, ud1, ud2);
-		double l, m;
+		long double l, m;
 		while (true) {
 			l = m2d(A.y * (pow(B.x) - pow(C.x)) + B.y * (pow(C.x) - pow(A.x)) + C.y * (pow(A.x) - pow(B.x)));
 			m = m2d(A.y * (B.x - C.x) + B.y * (C.x - A.x) + C.y * (A.x - B.x));
