@@ -38,7 +38,7 @@ void lab1()
 {
 	int TIMES = 1;
 	srand(time(NULL));
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < TIMES; i++) {
 		
 		double* Y = new double[3];
 	    double epsilon = 1e-10, gamma = 1e-200, Nmax = 1000;
@@ -56,6 +56,8 @@ void lab1()
 		//cout << ";" << interval[1];
 		//cout << ";" << x0 << ";";
 
+		//FIBONACCI
+
 		solution solF = fib(func_lab_12, LBOUND, HBOUND, epsilon);
 
 		cout << solF.x;
@@ -65,19 +67,21 @@ void lab1()
 		cout << ";" << solF.y;*/
 		cout << solF.f_calls;
 		solF.clear_calls();
-		cout << ";" << func_lab_12(solF.x, solF.ud, ud2);
+		cout << ";" << func_lab_12(solF.x, solF.ud, ud2) << endl;
 
-		solution solL = lag(func_lab_12, LBOUND, HBOUND, epsilon, gamma, Nmax);
+		//LAGRANGE
 
-		/*cout << ";" << solL.x;
-		cout << ";" << solL.y;*/
-		cout << solL.x;
-		cout << solL.y;
+		//solution solL = lag(func_lab_12, LBOUND, HBOUND, epsilon, gamma, Nmax);
 
-		cout << solL.f_calls;
-		cout << ";" << func_lab_12(solL.x, solL.ud, ud2);
+		///*cout << ";" << solL.x;
+		//cout << ";" << solL.y;*/
+		//cout << solL.x;
+		//cout << solL.y;
 
-		cout << endl;
+		//cout << solL.f_calls;
+		//cout << ";" << func_lab_12(solL.x, solL.ud, ud2);
+
+		//cout << endl;
 	}
 
 

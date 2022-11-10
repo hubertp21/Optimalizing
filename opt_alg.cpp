@@ -106,10 +106,18 @@ solution fib(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 		D.fit_fun(ff, ud1, ud2);
 		for (int i = 0; i <= n - 3; ++i)
 		{
+			/*if (A.x < B.x) {
+				cout << A.x << B.x << "\n";
+			}
+			else {
+				cout << B.x << A.x << "\n";
+			}*/
+
 			if (C.y < D.y)
 				B = D;
 			else
 				A = C;
+
 			C.x = B.x - 1.0 * F[n - i - 2] / F[n - i - 1] * (B.x - A.x);
 			D.x = A.x + B.x - C.x;
 			C.fit_fun(ff, ud1, ud2);
