@@ -57,12 +57,18 @@ void lab1()
 		//cout << ";" << x0 << ";";
 
 		//FIBONACCI
-
+		//solF.clear_calls();
 		//solution solF = fib(func_lab_12, LBOUND, HBOUND, epsilon);
+		solution::clear_calls();
 		solution solF = fib(ff1R, interval[0], interval[1], epsilon);
+		cout << endl << endl << endl;
+		cout << "\nFIBBONACI:\n";
+		
+		/*cout << solF.x;
+		cout << solF.y;
+		cout << solF.f_calls;*/
 
-		//cout << solF.x;
-		//cout << solF.y;
+		
 
 		///*cout << ";" << solF.x;
 		//cout << ";" << solF.y;*/
@@ -71,13 +77,35 @@ void lab1()
 		//cout << ";" << func_lab_12(solF.x, solF.ud, ud2) << endl;
 
 		//LAGRANGE
-
+		//solL.clear_calls();
+		solution::clear_calls();
+		//cout << "B4 LAG F CALLS: " << solution::f_calls << endl;
 		solution solL = lag(ff1R, interval[0], interval[1], epsilon, gamma, Nmax);
-
+		
+		
 		/*cout << ";" << solL.x;
 		cout << ";" << solL.y;*/
-		cout << solL.x;
+
+		cout << endl << endl << endl;
+		//cout << "\nLAGRANGE:\n";
+
+		/*cout << solL.x;
 		cout << solL.y;
+		cout << solL.f_calls << endl;*/
+
+		matrix Z0 = matrix(3, new double[3]{ 5, 1, 10 });
+
+		matrix* Z = solve_ode(df1,0,1,1000,Z0,0,solF.x);
+		//cout  << " " << Z[1][2] << " " << endl<<endl<<endl<<"LAG:\n";
+
+		matrix* Z1 = solve_ode(df1, 0, 1, 1000, Z0, 0, solL.x);
+		//cout  << " " << Z1[1][2] << " " << endl;
+
+		matrix ud1, ud2;
+		//matrix ans = ff1R(Z,ud1,ud2);
+		//cout << endl << "ANS: \n" << ans << endl;
+		//cout << endl << "TO FIBONACHI\n" << Z1[1][0] << endl;
+		//cout << endl << "TO LAGRANGE\n" << Z1[1][0] << endl;
 
 		//cout << solL.f_calls << endl;
 		//cout << ";" << func_lab_12(solL.x, solL.ud, ud2);

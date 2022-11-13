@@ -144,12 +144,12 @@ solution lag(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 		int ct = 0;
 		Xopt.ud = b - a;
 		solution A(a), B(b), C, D, D_old(a);
-		if (A.x < B.x) {
+		/*if (A.x < B.x) {
 			cout << A.x << B.x << " counter: " << ct << "\n";
 		}
 		else {
 			cout << B.x << A.x << " counter: " << ct << "\n";
-		}
+		}*/
 		C.x = (a + b) / 2;
 		A.fit_fun(ff, ud1, ud2);
 		B.fit_fun(ff, ud1, ud2);
@@ -205,15 +205,15 @@ solution lag(matrix(*ff)(matrix, matrix, matrix), double a, double b, double eps
 			B.fit_fun(ff, ud1, ud2);
 			C.fit_fun(ff, ud1, ud2);
 
-			if (A.x < B.x) {
+			/*if (A.x < B.x) {
 				cout << A.x << B.x << " counter: " << ct << "\n";
 			}
 			else {
 				cout << B.x << A.x << " counter: " << ct << "\n";
-			}
+			}*/
 
 			Xopt.ud.add_row((B.x - A.x)());
-			cout << "LEN B-A: " << B.x - A.x << endl;
+			//cout << "LEN B-A: " << B.x - A.x << endl;
 
 			if (B.x - A.x < epsilon || abs(D.x() - D_old.x()) < gamma) {
 				Xopt = D;
