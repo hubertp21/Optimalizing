@@ -239,15 +239,50 @@ solution HJ(matrix(*ff)(matrix, matrix, matrix), matrix x0, double s, double alp
 {
 	try
 	{
-		solution Xopt;
+		solution Xopt, XB, XBold, X;
 		//Tu wpisz kod funkcji
+		do {
+			XB = X;
+			X = HJ_trial(ff2T, XB, s);
+			double* Y = new double[3];
+			Y[0] = 1; Y[1] = 1; Y[2] = 1;
 
-		return Xopt;
-	}
-	catch (string ex_info)
-	{
-		throw ("solution HJ(...):\n" + ex_info);
-	}
+			if (ff2T(X.x, ud1, ud2) < ff2T(XB.x, ud1, ud2)) {
+				while (true)
+				{
+					XBold = XB;
+					XB = X;
+					X.x = 2 * XB.x - XBold.x;
+
+					X = HJ_trial(ff2T, XB, s);
+
+					if (solution::f_calls > Nmax) {
+						return NULL;
+					}
+
+					if (ff2T(X.x, ud1, ud2) >= ff2T(XB.x, ud1, ud2)) {
+						break;
+					}
+				}
+
+				X = XB;
+			}
+			else {
+				s = s * alpha;
+			}
+
+			if (solution::f_calls > Nmax) {
+				return NULL;
+			}
+
+			X = Xopt;
+			while (s < epsilon);
+			return Xopt;
+		}
+		catch (string ex_info)
+		{
+			throw ("solution HJ(...):\n" + ex_info);
+		}
 }
 
 solution HJ_trial(matrix(*ff)(matrix, matrix, matrix), solution XB, double s, matrix ud1, matrix ud2)
@@ -255,8 +290,17 @@ solution HJ_trial(matrix(*ff)(matrix, matrix, matrix), solution XB, double s, ma
 	try
 	{
 		//Tu wpisz kod funkcji
-
-		return XB;
+		int n = get_dim(XB);
+		solution X;
+		for (int i = 0; i < n; i++) {
+			if (ff2T(XB.x + s*) < ff2T(XB.x, 0, 0) {
+				X.x = XB.x + s*;
+			}
+			else if (ff2T(XB.x - s*, 0, 0) < ff2T(XB.x, 0, 0)) {
+				X.x = XB.x - s*;
+			}
+		}
+		return X;
 	}
 	catch (string ex_info)
 	{
