@@ -1,4 +1,5 @@
 #include"opt_alg.h"
+#include <cmath>
 
 double* expansion(matrix(*ff)(matrix, matrix, matrix), double x0, double d, double alpha, int Nmax, matrix ud1, matrix ud2)
 {
@@ -239,33 +240,39 @@ solution HJ(matrix(*ff)(matrix, matrix, matrix), matrix x0, double s, double alp
 {
 	try
 	{
-		solution Xopt, XB, XBold, X;
+		solution Xopt, XB(x0), XBold, X(x0);
 		//Tu wpisz kod funkcji
-		do {
-			XB = X;
-			X = HJ_trial(ff2T, XB, s);
-			double* Y = new double[3];
-			Y[0] = 1; Y[1] = 1; Y[2] = 1;
+		//if (s < epsilon) cout << "TRUE";
+		while (s > epsilon) {
+			
+			X = HJ_trial(ff, XB, s);
+			//X.fit_fun(ff, ud1, ud2);
+			/*double* Y = new double[3];
+			Y[0] = 1; Y[1] = 1; Y[2] = 1;*/
+			//X.x - x aktualizuja sie
+			//X.y - y
+			//fitfun liczy dla x igreka
 
-			if (ff2T(X.x, ud1, ud2) < ff2T(XB.x, ud1, ud2)) {
+			if (X.y<XB.y) { //
 				while (true)
 				{
 					XBold = XB;
 					XB = X;
 					X.x = 2 * XB.x - XBold.x;
+					X.fit_fun(ff, ud1, ud2);
 
-					X = HJ_trial(ff2T, XB, s);
+					X = HJ_trial(ff, X, s);
 
 					if (solution::f_calls > Nmax) {
 						return NULL;
 					}
 
-					if (ff2T(X.x, ud1, ud2) >= ff2T(XB.x, ud1, ud2)) {
+					if (X.y >= XB.y) {
 						break;
 					}
 				}
 
-				X = XB;
+				//XxXB;
 			}
 			else {
 				s = s * alpha;
@@ -275,14 +282,16 @@ solution HJ(matrix(*ff)(matrix, matrix, matrix), matrix x0, double s, double alp
 				return NULL;
 			}
 
-			X = Xopt;
-			while (s < epsilon);
-			return Xopt;
-		}
-		catch (string ex_info)
-		{
-			throw ("solution HJ(...):\n" + ex_info);
-		}
+			
+		} 
+		Xopt = X;
+		return Xopt;
+
+	}
+	catch (string ex_info)
+	{
+		throw ("solution HJ(...):\n" + ex_info);
+	}
 }
 
 solution HJ_trial(matrix(*ff)(matrix, matrix, matrix), solution XB, double s, matrix ud1, matrix ud2)
@@ -292,13 +301,22 @@ solution HJ_trial(matrix(*ff)(matrix, matrix, matrix), solution XB, double s, ma
 		//Tu wpisz kod funkcji
 		int n = get_dim(XB);
 		solution X;
+		matrix d = ident_mat(n);
 		for (int i = 0; i < n; i++) {
-			if (ff2T(XB.x + s*) < ff2T(XB.x, 0, 0) {
-				X.x = XB.x + s*;
+			X.x = XB.x + s * d[i];
+			X.fit_fun(ff,ud1,ud2);
+			if (X.y < XB.y) {
+				XB = X;
 			}
-			else if (ff2T(XB.x - s*, 0, 0) < ff2T(XB.x, 0, 0)) {
-				X.x = XB.x - s*;
+			else {
+				X.x = XB.x - s* d[i];
+				X.fit_fun(ff, ud1, ud2);
+				if (X.y < XB.y) {
+					XB = X;
+				}
+				
 			}
+			
 		}
 		return X;
 	}

@@ -23,7 +23,8 @@ int main()
 	try
 	{
 		//freopen("out.txt", "w", stdout);
-		lab1();
+		//lab1();
+		lab2();
 	}
 	catch (string EX_INFO)
 	{
@@ -133,7 +134,17 @@ void lab1()
 
 void lab2()
 {
-
+	double s = 0.5,
+		alphaHJ = 0.5,
+		alphaR = 2,
+		beta = 0.5,
+		epsilon = 1e-3;
+	int Nmax = 1000;
+	matrix x0 = matrix(2, 1, 0.5);
+	solution::clear_calls();
+	solution sol = HJ(ff2T,x0,s,alphaHJ,epsilon,Nmax);
+	//if (sol == NULL) cout << "NULL";
+	cout << sol.x<< endl << sol.y << endl << solution::f_calls << endl;
 }
 
 void lab3()
