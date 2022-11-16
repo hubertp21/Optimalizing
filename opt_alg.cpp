@@ -285,6 +285,7 @@ solution HJ(matrix(*ff)(matrix, matrix, matrix), matrix x0, double s, double alp
 			
 		} 
 		Xopt = X;
+		Xopt.fit_fun(ff, ud1, ud2);
 		return Xopt;
 
 	}
