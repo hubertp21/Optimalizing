@@ -154,6 +154,19 @@ void lab2()
 	cout << "ROSEN\n" << endl;
 	solution sol2 = Rosen(ff2T, x0, s0, alphaR, beta, epsilon, Nmax);
 	cout << sol2 << endl;
+
+	//PROBLEM RZECZYWISTY
+	solution opt;
+	s = 2;
+	x0 = 10 * rand_mat(2, 1);
+	cout << x0 << endl << endl;
+	opt = HJ(ff2R, x0, s, alphaHJ, epsilon, Nmax);
+	cout << opt << endl << endl;
+	solution::clear_calls();
+	s0 = matrix(2, 1, s);
+	opt = Rosen(ff2R, x0, s0, alphaR, beta, epsilon, Nmax);
+	cout << opt << endl << endl;
+	solution::clear_calls();
 	
 }
 

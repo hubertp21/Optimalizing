@@ -314,10 +314,10 @@ solution Rosen(matrix(*ff)(matrix, matrix, matrix), matrix x0, matrix s0, double
 	try
 	{
 		solution X(x0), Xt;
-		int n = get_dim(X);//liczba wymiar�w
-		matrix l(n, 1),//odleg�o� od orginalnego punktu 
-			p(n, 1),//pora�ki w kierunu
-			s(s0),//d�ugo�ci kroku
+		int n = get_dim(X);
+		matrix l(n, 1),
+			p(n, 1),
+			s(s0),
 			D = ident_mat(n);
 		X.fit_fun(ff, ud1, ud2);
 		while (true)
