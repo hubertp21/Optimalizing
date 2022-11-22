@@ -1,4 +1,4 @@
-#include"opt_alg.h"
+﻿#include"opt_alg.h"
 #include <cmath>
 
 double* expansion(matrix(*ff)(matrix, matrix, matrix), double x0, double d, double alpha, int Nmax, matrix ud1, matrix ud2)
@@ -240,53 +240,35 @@ solution HJ(matrix(*ff)(matrix, matrix, matrix), matrix x0, double s, double alp
 {
 	try
 	{
-		solution Xopt, XB(x0), XBold, X(x0);
-		//Tu wpisz kod funkcji
-		//if (s < epsilon) cout << "TRUE";
-		while (s > epsilon) {
-			
-			X = HJ_trial(ff, XB, s);
-			//X.fit_fun(ff, ud1, ud2);
-			/*double* Y = new double[3];
-			Y[0] = 1; Y[1] = 1; Y[2] = 1;*/
-			//X.x - x aktualizuja sie
-			//X.y - y
-			//fitfun liczy dla x igreka
+		solution XB, XB_old, X;
+		XB.x = x0;
+		XB.fit_fun(ff, ud1, ud2);
+		while (true)
+		{
 
-			if (X.y<XB.y) { //
+			X = HJ_trial(ff, XB, s, ud1, ud2);
+			//cout << X.x(0) << " " << X.x(1) << endl;
+			if (X.y < XB.y)
+			{
 				while (true)
 				{
-					XBold = XB;
+					XB_old = XB;
 					XB = X;
-					X.x = 2 * XB.x - XBold.x;
+					X.x = XB.x + XB.x - XB_old.x;
+
 					X.fit_fun(ff, ud1, ud2);
-
-					X = HJ_trial(ff, X, s);
-
-					if (solution::f_calls > Nmax) {
-						return NULL;
-					}
-
-					if (X.y >= XB.y) {
+					X = HJ_trial(ff, X, s, ud1, ud2);
+					if (X.y >= XB.y)
 						break;
-					}
+					if (XB.f_calls > Nmax)
+						return XB;
 				}
-
-				//XxXB;
 			}
-			else {
-				s = s * alpha;
-			}
-
-			if (solution::f_calls > Nmax) {
-				return NULL;
-			}
-
-			
-		} 
-		Xopt = X;
-		Xopt.fit_fun(ff, ud1, ud2);
-		return Xopt;
+			else
+				s *= alpha;
+			if (XB.f_calls > Nmax || s < epsilon)
+				return XB;
+		}
 
 	}
 	catch (string ex_info)
@@ -319,7 +301,7 @@ solution HJ_trial(matrix(*ff)(matrix, matrix, matrix), solution XB, double s, ma
 			}
 			
 		}
-		return X;
+		return XB;
 	}
 	catch (string ex_info)
 	{
@@ -331,10 +313,66 @@ solution Rosen(matrix(*ff)(matrix, matrix, matrix), matrix x0, matrix s0, double
 {
 	try
 	{
-		solution Xopt;
-		//Tu wpisz kod funkcji
-
-		return Xopt;
+		solution X(x0), Xt;
+		int n = get_dim(X);//liczba wymiar�w
+		matrix l(n, 1),//odleg�o� od orginalnego punktu 
+			p(n, 1),//pora�ki w kierunu
+			s(s0),//d�ugo�ci kroku
+			D = ident_mat(n);
+		X.fit_fun(ff, ud1, ud2);
+		while (true)
+		{
+			for (int i = 0; i < n; ++i)
+			{
+				Xt.x = X.x + s(i) * D[i];
+				Xt.fit_fun(ff, ud1, ud2);
+				if (Xt.y < X.y)
+				{
+					X = Xt;
+					l(i) += s(i);
+					s(i) *= alpha;
+				}
+				else
+				{
+					++p(i);
+					s(i) *= -beta;
+				}
+			}
+			bool change = true;
+			for (int i = 0; i < n; ++i)
+				if (p(i) == 0 || l(i) == 0)
+				{
+					change = false;
+					break;
+				}
+			if (change)
+			{
+				matrix Q(n, n), v(n, 1);
+				for (int i = 0; i < n; ++i)
+					for (int j = 0; j <= i; ++j)
+						Q(i, j) = l(i);
+				Q = D * Q;
+				v = Q[0] / norm(Q[0]);
+				D.set_col(v, 0);
+				for (int i = 1; i < n; ++i)
+				{
+					matrix temp(n, 1);
+					for (int j = 0; j < i; ++j)
+						temp = temp + trans(Q[i]) * D[j] * D[j];
+					v = (Q[i] - temp) / norm(Q[i] - temp);
+					D.set_col(v, i);
+				}
+				s = s0;
+				l = matrix(n, 1);
+				p = matrix(n, 1);
+			}
+			double max_s = abs(s(0));
+			for (int i = 1; i < n; ++i)
+				if (max_s < abs(s(i)))
+					max_s = abs(s(i));
+			if (max_s<epsilon || solution::f_calls>Nmax)
+				return X;
+		}
 	}
 	catch (string ex_info)
 	{

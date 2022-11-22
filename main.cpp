@@ -140,12 +140,21 @@ void lab2()
 		beta = 0.5,
 		epsilon = 1e-3;
 	int Nmax = 1000;
+
 	matrix x0 = matrix(2, 1, 0.75);
 	//cout << x0;
 	solution::clear_calls();
-	solution sol = HJ(ff2T,x0,s,alphaHJ,epsilon,Nmax);
+	cout << "HJ:\n" << endl;
+	solution sol1 = HJ(ff2T,x0,s,alphaHJ,epsilon,Nmax);
 	//if (sol == NULL) cout << "NULL";
-	cout << sol << endl;
+	cout << sol1 << endl;
+	solution::clear_calls();
+	matrix s0 = matrix(2, 1, s);
+	
+	cout << "ROSEN\n" << endl;
+	solution sol2 = Rosen(ff2T, x0, s0, alphaR, beta, epsilon, Nmax);
+	cout << sol2 << endl;
+	
 }
 
 void lab3()
