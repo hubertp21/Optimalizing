@@ -77,3 +77,36 @@ matrix df2(double t, matrix Y, matrix ud1, matrix ud2)
     dY(1) = (ud2(0) * (ud1(0) - Y(0)) + ud2(1) * (ud1(1) - Y(1)) - b * Y(1)) / I;
     return dY;
 }
+
+matrix f4T(matrix x, matrix ud1, matrix ud2)
+{
+    matrix y;
+
+    if (isnan(ud2(0, 0)))
+        y = pow((x(0) + 2 * x(1) - 7), 2) + pow((2 * x(0) + x(1) - 5), 2);//funkcja celu
+
+    else
+        y = f4T(ud2(0) + x * ud2[1], ud1, ud2);
+
+    return y;
+}
+
+matrix gf(matrix x, matrix ud1, matrix ud2) {
+    matrix g(2, 1);
+
+    g(0) = 10 * x(0) + 8 * x(1) - 34;
+    g(1) = 8 * x(0) + 10 * x(1) - 38;
+
+    return g;
+}
+
+matrix hf(matrix x, matrix ud1, matrix ud2) {
+    matrix H(2, 2);
+
+    H(0, 0) = 10;
+    H(0, 1) = 8;
+    H(1, 0) = 8;
+    H(1, 1) = 10;
+
+    return H;
+}
