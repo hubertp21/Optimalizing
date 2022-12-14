@@ -487,24 +487,23 @@ solution golden(matrix(*ff)(matrix, matrix, matrix), double a, double b, double 
 	{
 		solution Xopt, A, B, C, D;
 		double alpha = (pow(5, 0.5) - 1) / 2;
-
 		A.x = a;
 		B.x = b;
 		C.x = B.x - alpha * (B.x - A.x);
 		D.x = A.x + alpha * (B.x - A.x);
 
 		while (true) {
-			if (C.fit_fun(ff, ud1, ud2) < D.fit_fun(ff, ud1, ud2) {
+			if (C.fit_fun(ff, ud1, ud2) < D.fit_fun(ff, ud1, ud2)) {
 				A.x = A.x;
-					B.x = D.x;
-					C.x = B.x - alpha * (B.x - A.x);
-					D.x = C.x
+				B.x = D.x;
+				C.x = B.x - alpha * (B.x - A.x);
+				D.x = C.x;
 			}
 			else {
-				A.c = C.x;
-					B.x = B.x;
-					C.x = D.x;
-					D.x = A.x + alpha * (B.x - A.x);
+				A.x = C.x;
+				B.x = B.x;
+				C.x = D.x;
+				D.x = A.x + alpha * (B.x - A.x);
 			}
 
 			if ((B.x - A.x) < epsilon) {
@@ -516,8 +515,6 @@ solution golden(matrix(*ff)(matrix, matrix, matrix), double a, double b, double 
 				break;
 			}
 		}
-
-
 		return Xopt;
 	}
 	catch (string ex_info)
