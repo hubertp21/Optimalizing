@@ -24,7 +24,7 @@ int main()
 	{
 		//freopen("out.txt", "w", stdout);
 		//lab1();
-		lab2();
+		lab4();
 	}
 	catch (string EX_INFO)
 	{
@@ -177,7 +177,14 @@ void lab3()
 
 void lab4()
 {
+	solution s;
+	double h0 = 0.05;
+	double epsilon = 1e-3;
+	int NMAX = 1000;
+	matrix ud1, ud2;
 
+	s = Newton(f4T, gf, hf, matrix(2, 1, 0.75), h0, epsilon, NMAX, ud1, ud2);
+	cout << s;
 }
 
 void lab5()

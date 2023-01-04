@@ -416,6 +416,7 @@ solution SD(matrix(*ff)(matrix, matrix, matrix), matrix(*gf)(matrix, matrix, mat
 		solution Xopt;
 		int n = get_len(x0);
 		solution X0, X1;
+		X0.x = x0;
 		matrix d(n, 1), p(n, 2);
 		solution h; //krok 
 		double* ab;
@@ -460,7 +461,7 @@ solution CG(matrix(*ff)(matrix, matrix, matrix),
 		int n = get_len(x0);
 		solution X0, X1;
 		matrix d(n, 1), p(n, 2);
-		matrix lastD(n, 1), p(n, 2);
+		matrix lastD(n, 1);
 		solution h; //krok 
 		double* ab;
 
@@ -501,7 +502,8 @@ solution Newton(matrix(*ff)(matrix, matrix, matrix), matrix(*gf)(matrix, matrix,
 	{
 		solution Xopt;
 		int n = get_len(x0);
-		solution X0, X1;
+		solution X0, X1; 
+		X0.x = x0;
 		matrix d(n, 1), p(n, 2);
 		solution h; //krok 
 		double* ab;
