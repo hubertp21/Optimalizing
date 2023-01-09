@@ -110,3 +110,113 @@ matrix hf(matrix x, matrix ud1, matrix ud2) {
 
     return H;
 }
+
+matrix ff4R(matrix x, matrix ud1, matrix ud2)
+{
+    matrix y;
+    int m = 100;
+    int n = get_len(x);
+    static matrix X(n, m), Y(1, m);
+    static bool read = true;
+    if (read)
+    {
+        ifstream S("XData.txt");
+        S >> X;
+        S.close();
+        S.open("YData.txt");
+        S >> Y;
+        S.close();
+        read = false;
+    }
+    double h;
+    y = 0;
+    for (int i = 0; i < m; ++i)
+    {
+        h = (trans(x) * X[i])();
+        h = 1.0 / (1.0 + exp(-h));
+        y = y - Y(0, i) * log(h) - (1 - Y(0, i)) * log(1 - h);
+    }
+    y = y / m;
+    return y;
+}
+
+matrix gf4R(matrix x, matrix ud1, matrix ud2)
+{
+    int m = 100;
+    int n = get_len(x);
+    matrix g(n, 1);
+    static matrix X(n, m), Y(1, m);
+    static bool read = true;
+    if (read)
+    {
+        ifstream S("XData.txt");
+        S >> X;
+        S.close();
+        S.open("YData.txt");
+        S >> Y;
+        S.close();
+        read = false;
+    }
+    double h;
+    for (int j = 0; j < n; ++j)
+    {
+        for (int i = 0; i < m; ++i)
+        {
+            h = (trans(x) * X[i])();
+            h = 1 / (1 + exp(-h));
+            g(j) = g(j) + X(j, i) * (h - Y(0, i));
+        }
+        g(j) = g(j) / m;
+    }
+    return g;
+}
+
+matrix f5T(matrix x, matrix ud1, matrix ud2) {
+    if (isnam(ud2(0, 0)) {
+        y = matrix(2, 1);
+        y(0) = ud1(1) * pow(x(0) - 2, 2) + pow(x(1) - 2, 2);
+        y(1) = (1 / (ud1(1))) * pow(x(0) + 2, 2) + pow(x(1) + 2, 2);
+    }
+    else {
+        matrix yt;
+        yt = f5T(ud2[0] + x * ud2[1], ud1);
+        y = ud1(0) * yt(0) + (1 - ud1(0)) * yt(1);
+    }
+    return y;
+}
+
+matrix fR5(matrix x, matrix ud1, matrix ud2) {
+    matrix y;
+    if (isnam(ud2(0, 0)) {
+        y = matrix(3,1);
+        double ro = 7800, P=1e3, E=207e9;
+        y(0) = ro * x(0) * 3.14 * pow(x(1),2)/4;
+        y(1) = 64 * P * pow(x(0),3)/(3*E*3.14*pow(ro,4));
+        y(2) = (32 * P * x(0)) / (3.14 * pow(ro, 3));
+    }
+    else 
+    {
+        matrix yt, xt = ud2[0] + x * ud2[1];
+            yt = fR5(xt, ud1);
+            y = ud1 * (yt(0) - 0.06) / (1.53 - 0.06) + (1 - ud1) * (yt(1) - 5.25e-6) / (0.0032 - 5.25e-6);
+        double c = 1e10;
+        if (xt(0) < 0.2) {
+            y = y + c * pow(0.2 - xt(0), 2);
+        }
+        if (xt(0) > 1) {
+            y = y + c * pow( xt(0)-1, 2);
+        }
+        if (xt(1) < 0.01) {
+            y = y + c * pow(0.01-xt(1),2);
+        }
+        if (xt(1) >0.05) {
+            y = y + c * pow(xt(1)-0.05,2);
+        }
+        if (yt(1) > 0.005) {
+            y = y + c * pow(yt(1)-0.005, 2);
+        }
+        if (yt(2) > 300e6) {
+            y = y + c * pow(yt(2)-300e6, 2);
+        }
+    }
+}

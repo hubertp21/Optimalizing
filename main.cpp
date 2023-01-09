@@ -183,7 +183,7 @@ void lab4()
 	int NMAX = 1000;
 	matrix ud1, ud2;
 
-	s = Newton(f4T, gf, hf, matrix(2, 1, 0.75), h0, epsilon, NMAX, ud1, ud2);
+	s = SD(f4T, gf, matrix(2, 1, 0.75), h0, epsilon, NMAX, ud1, ud2);
 	cout << s;
 }
 
